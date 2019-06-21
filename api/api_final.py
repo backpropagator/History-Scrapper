@@ -12,7 +12,9 @@ from django import db
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
+#Change the Username according to your laptop
 user_name = "aquarius31"
+#This path is only for Linux Version, we can later extend it to Windows also
 path = "/home/"+user_name+"/.config/google-chrome/Default/History"
 
 #@app.route('/', methods=['GET'])
