@@ -6,6 +6,7 @@ import collections
 import operator
 import os
 from django import db
+import json
 
 #db.connections.close_all()
 
@@ -41,6 +42,8 @@ def counter():
 
 	sites_count_sorted = collections.OrderedDict(sorted(sites_count.items(), key=lambda kv: kv[1], reverse=True))
 	#sites_count_sorted = sorted(sites_count)
+	with open("data_file.json", "w") as write_file:
+		json.dump(sites_count_sorted, write_file)
 	return jsonify(sites_count_sorted)
 
 app.run()
