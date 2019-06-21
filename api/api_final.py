@@ -1,5 +1,5 @@
 import flask
-from flask import request, jsonify
+from flask import request, jsonify, render_template
 import sqlite3
 import url_utils
 import collections 
@@ -14,7 +14,7 @@ app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
 #Change the Username according to your laptop
-user_name = "aquarius31"
+user_name = "phoenix"
 #This path is only for Linux Version, we can later extend it to Windows also
 path = "/home/"+user_name+"/.config/google-chrome/Default/History"
 
@@ -29,7 +29,7 @@ def stats():
 	c.close()
 	return results
 
-@app.route('/', methods=['GET'])
+@app.route('/data', methods=['GET'])
 def counter():
 	sites_count = {}
 	results = stats()
@@ -45,5 +45,7 @@ def counter():
 	with open("data_file.json", "w") as write_file:
 		json.dump(sites_count_sorted, write_file)
 	return jsonify(sites_count_sorted)
-
+@app.route('/', methods=['GET'])
+def index():
+	return render_template('index.html')
 app.run()
