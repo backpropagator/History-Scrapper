@@ -1,0 +1,12 @@
+{
+    "name": "History Predictor",
+    "description": "An advanced history predictior",
+    "version": "0.1",
+    "manifest_version": 2,
+    "app": {
+      "background": {
+        "scripts": ["main.js"]
+      }
+    },
+    "icons": { "16": "", "128": "" }
+  }
