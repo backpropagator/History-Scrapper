@@ -8,7 +8,7 @@ import os
 from django import db
 import json
 import itertools
-from connection_utils import return_db, return_top_sites
+from connection_utils import *
 from sorting_apis import *
 
 '''
@@ -23,7 +23,7 @@ app.config["DEBUG"] = True
 Change the Username according to your laptop
 TODO: Make functionality to take user input and set the user_name automatically
 '''
-user_name = "phoenix"
+user_name = "aquarius31"
 
 '''
 This path is only for Linux Version, we can later extend it to Windows also
@@ -69,8 +69,8 @@ def counter():
 		return sort_by_recently_spent_time(results)
 
 	if not by:
-		return page_not_found(404)
-
+		results = return_last_visited_time(path_to_history)
+		return last_visited(results)
 '''
 Main Index page
 '''

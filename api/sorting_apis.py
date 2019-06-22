@@ -3,7 +3,30 @@ import collections
 import operator
 import json
 import itertools
+import datetime
 from flask import jsonify
+
+
+def convert_ts(epoch, ts):
+    '''(str, int) --> str
+    Takes a timestamp (ts) in seconds and returns a human readable format 
+    based on a provided epoch.  Times are UTC.
+    
+    >>> convert_ts('1970-01-01', 0)
+    '1970-01-01 00:00:00'
+    >>> convert_ts('1970-01-01', 1493750183)
+    '2017-05-02 18:36:23'
+    >>> convert_ts('2001-01-01', 515442983)
+    '2017-05-02 18:36:23' '''
+    
+    delta = datetime.datetime.strptime(epoch, "%Y-%m-%d")
+    conversion = delta + datetime.timedelta(seconds=ts)
+    return conversion.strftime("%Y-%m-%d %H:%M:%S")
+
+def date_from_webkit(webkit_timestamp):
+    epoch_start = datetime.datetime(1601,1,1)
+    delta = datetime.timedelta(microseconds=int(webkit_timestamp))
+    return epoch_start + delta
 
 '''
 API to sort sites by number of visits
@@ -48,3 +71,15 @@ def sort_by_recently_spent_time(results):
 	#top3_ranked_dict = {k: sites_rank_sorted[k] for k in list(sites_rank_sorted.keys())[:numberOfElementsToDisplay]}
 
 	return jsonify(sites_rank)
+
+'''
+API to output last visited time of each site
+'''
+def last_visited(results):
+	last_visit = {}
+
+	for url, ts in results:
+		url = url_utils.parse(url)
+		last_visit[url] = date_from_webkit(ts)
+
+	return jsonify(last_visit)

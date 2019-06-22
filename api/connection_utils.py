@@ -22,3 +22,12 @@ def return_top_sites(path):
 	results = c.fetchall()
 	c.close()
 	return results
+
+def return_last_visited_time(path):
+	connection = sqlite3.connect(path,timeout=5)
+	c = connection.cursor()
+	query = "SELECT urls.url, urls.last_visit_time FROM urls"
+	c.execute(query)
+	results = c.fetchall()
+	c.close()
+	return results
