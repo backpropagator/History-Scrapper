@@ -23,7 +23,7 @@ app.config["DEBUG"] = True
 Change the Username according to your laptop
 TODO: Make functionality to take user input and set the user_name automatically
 '''
-user_name = "aquarius31"
+user_name = "phoenix"
 
 '''
 This path is only for Linux Version, we can later extend it to Windows also

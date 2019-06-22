@@ -6,6 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>History scraper</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+    .jumbotron h3{
+        display:inline-block;
+        cursor:pointer;
+    }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -15,17 +21,69 @@
                     <hr class="my-4">
                     <p>Wanna know what history we have predicted for you? Click Below </p>
                     <a class="btn btn-primary btn-lg scrap-now" href="#" role="button">Scrap Now</a>
+                    <h3><span class="badge badge-primary" id="frequency">Frequency</span></h3>
+                    <h3><span class="badge badge-secondary" id="time">Time</span></h3>
+                <!-- <ul class="list-group"><li class="list-group-item"></li></ul> -->
             </div>
+            
+
     </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script>
+    $(document).ready(function(){
+        $('.jumbotron h3').hide();
+        $('.jumbotron ul').hide();
+    })
     $('.scrap-now').on('click',function(){
-            $.ajax({dataType:'json',url:'/data',success:function(data){
-                console.log(data);
+            $.ajax({dataType:'json',url:'/sort?by=frequency',success:function(data){
+                $('.scrap-now').hide();
+                $ul =$('<ul class="list-group"></ul>');
+                Object.keys(data).forEach(function(key) {
+                    $('<li class="list-group-item"></li>').appendTo($ul).text(key);
+                });
+                $ul.appendTo('.jumbotron');
+                $('.jumbotron h3').show();
             }})
         })
+    $('#time').on('click',function(){
+        $.ajax({
+            dataType:'json',url:'/sort?by=time_spent',success:function(data){
+                if($('ul li').length > 0){
+                    $('ul').remove();
+                }
+                console.log(data);
+                $ul =$('<ul class="list-group"></ul>');
+                Object.keys(data).forEach(function(key) {
+                    $('<li class="list-group-item"></li>').appendTo($ul).text(data[key]);
+                });
+                $ul.appendTo('.jumbotron');
+                if($('#frequency').hasClass('badge-primary')){
+                    $('#frequency').removeClass('badge-primary').addClass('badge-secondary');
+                    $('#time').removeClass('badge-secondary').addClass('badge-primary');
+                }
+            }
+        })
+    })
+    $('#frequency').on('click',function(){
+        $.ajax({
+            dataType:'json',url:'/sort?by=frequency',success:function(data){
+                if($('ul li').length > 0){
+                    $('ul').remove();
+                }
+                $ul =$('<ul class="list-group"></ul>');
+                Object.keys(data).forEach(function(key) {
+                    $('<li class="list-group-item"></li>').appendTo($ul).text(key);
+                });
+                $ul.appendTo('.jumbotron');
+                if($('#time').hasClass('badge-primary')){
+                    $('#time').removeClass('badge-primary').addClass('badge-secondary');
+                    $('#frequency').removeClass('badge-secondary').addClass('badge-primary');
+                }
+            }
+        })
+    })
 </script>
 </body>
 </html>
